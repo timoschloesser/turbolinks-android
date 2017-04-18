@@ -1,5 +1,7 @@
 package com.basecamp.turbolinks;
 
+import static android.os.Build.VERSION_CODES.M;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -8,7 +10,6 @@ import android.content.MutableContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.webkit.WebViewClient;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>The main concrete class to use Turbolinks 5 in your app.</p>
@@ -44,7 +46,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     Activity activity;
     HashMap<String, Object> javascriptInterfaces = new HashMap<>();
     HashMap<String, String> restorationIdentifierMap = new HashMap<>();
-    HashMap<String, String> additionalHeaders = new HashMap<>();
+    HashMap<String, String> headers = new HashMap<>();
     String location;
     String currentVisitIdentifier;
     TurbolinksAdapter turbolinksAdapter;
@@ -150,7 +152,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
             }
 
             @Override
-            @TargetApi(Build.VERSION_CODES.M)
+            @TargetApi(M)
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 super.onReceivedHttpError(view, request, errorResponse);
 
@@ -274,6 +276,17 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      * @param location The URL to visit.
      */
     public void visit(String location) {
+        this.visit(location, null);
+    }
+
+    /**
+     * <p><b>REQUIRED</b> Executes a Turbolinks visit. Must be called at the end of the chain --
+     * all required parameters will first be validated before firing.</p>
+     *
+     * @param location The URL to visit.
+     * @param additionalHeaders Additional headers for the call.
+     */
+    public void visit(String location, Map<String, String> additionalHeaders) {
         TurbolinksLog.d("visit called");
 
         this.location = location;
@@ -290,7 +303,17 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
 
         if (!turbolinksIsReady && !coldBootInProgress) {
             TurbolinksLog.d("Cold booting: " + location);
-            webView.loadUrl(location, additionalHeaders);
+
+            Map<String, String> mergedHeaders = new HashMap<>();
+            if(headers != null) {
+                mergedHeaders.putAll(headers);
+            }
+
+            if(additionalHeaders != null) {
+                mergedHeaders.putAll(additionalHeaders);
+            }
+
+            webView.loadUrl(location, mergedHeaders);
         }
 
         // Reset so that cached snapshot is not the default for the next visit
@@ -800,8 +823,22 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
         }
     }
 
-    public void setAdditionalHeaders(HashMap<String, String> additionalHeaders) {
-        this.additionalHeaders = additionalHeaders;
+    public void setHeaders(HashMap<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public void addHeaders(HashMap<String, String> headers) {
+        if(headers == null) headers = new HashMap<>();
+        this.headers.putAll(headers);
+    }
+
+    public void addHeader(String name, String value) {
+        if(headers == null) headers = new HashMap<>();
+        this.headers.put(name, value);
+    }
+
+    public HashMap<String, String> getHeaders() {
+        return headers;
     }
 
     // ---------------------------------------------------
