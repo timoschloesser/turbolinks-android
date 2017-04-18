@@ -44,6 +44,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     Activity activity;
     HashMap<String, Object> javascriptInterfaces = new HashMap<>();
     HashMap<String, String> restorationIdentifierMap = new HashMap<>();
+    HashMap<String, String> additionalHeaders = new HashMap<>();
     String location;
     String currentVisitIdentifier;
     TurbolinksAdapter turbolinksAdapter;
@@ -289,7 +290,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
 
         if (!turbolinksIsReady && !coldBootInProgress) {
             TurbolinksLog.d("Cold booting: " + location);
-            webView.loadUrl(location);
+            webView.loadUrl(location, additionalHeaders);
         }
 
         // Reset so that cached snapshot is not the default for the next visit
@@ -797,6 +798,10 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
         if (TextUtils.isEmpty(location)) {
             throw new IllegalArgumentException("TurbolinksSession.visit(location) location value must not be null.");
         }
+    }
+
+    public void setAdditionalHeaders(HashMap<String, String> additionalHeaders) {
+        this.additionalHeaders = additionalHeaders;
     }
 
     // ---------------------------------------------------
