@@ -55,6 +55,9 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     View progressView;
     View progressIndicator;
 
+    private String authUsername;
+    private String authPassword;
+
     static volatile TurbolinksSession defaultInstance;
 
     // ---------------------------------------------------
@@ -147,7 +150,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
             public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler,
                     String host,
                     String realm) {
-                handler.proceed("slive", "***REMOVED***");
+                handler.proceed(authUsername, authPassword);
             }
 
             @Override
@@ -847,6 +850,11 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
 
     public HashMap<String, String> getHeaders() {
         return headers;
+    }
+
+    public void setHttpAuthCredentials(String username, String password) {
+        this.authUsername = username;
+        this.authPassword = password;
     }
 
     // ---------------------------------------------------
