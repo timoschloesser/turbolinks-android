@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.HttpAuthHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -140,6 +141,13 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
                 }
 
                 return true;
+            }
+
+            @Override
+            public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler,
+                    String host,
+                    String realm) {
+                handler.proceed("slive", "ertHAS5");
             }
 
             @Override
