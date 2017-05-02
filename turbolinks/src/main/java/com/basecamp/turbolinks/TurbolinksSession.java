@@ -650,6 +650,12 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
             webView.addJavascriptInterface(object, name);
 
             TurbolinksLog.d("Adding JavascriptInterface: " + name + " for " + object.getClass().toString());
+        } else {
+            javascriptInterfaces.put(name, object);
+            webView.removeJavascriptInterface(name);
+            webView.addJavascriptInterface(object, name);
+
+            TurbolinksLog.d("Replacing JavascriptInterface: " + name + " for " + object.getClass().toString());
         }
     }
 
