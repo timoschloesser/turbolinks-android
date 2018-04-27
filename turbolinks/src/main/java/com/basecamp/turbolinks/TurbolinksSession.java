@@ -222,6 +222,15 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
         defaultInstance = null;
     }
 
+    /**
+     * <p>Tells the logger whether to allow logging in debug mode.</p>
+     *
+     * @param enabled If true debug logging is enabled.
+     */
+    public static void setDebugLoggingEnabled(boolean enabled) {
+        TurbolinksLog.setDebugLoggingEnabled(enabled);
+    }
+
     // ---------------------------------------------------
     // Required chained methods
     // ---------------------------------------------------
@@ -704,15 +713,6 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      */
     public void runJavascriptRaw(String rawJavascript) {
         TurbolinksHelper.runJavascriptRaw(applicationContext, webView, rawJavascript);
-    }
-
-    /**
-     * <p>Tells the logger whether to allow logging in debug mode.</p>
-     *
-     * @param enabled If true debug logging is enabled.
-     */
-    public void setDebugLoggingEnabled(boolean enabled) {
-        TurbolinksLog.setDebugLoggingEnabled(enabled);
     }
 
     /**

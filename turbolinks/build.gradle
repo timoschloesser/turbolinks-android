@@ -3,26 +3,26 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 buildscript {
-    ext.supportLibVersion = '25.1.1'
-    ext.libVersionName = '1.0.6'
+    ext.supportLibVersion = '27.0.2'
+    ext.libVersionName = '1.0.8'
 
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 8
+        targetSdkVersion 27
+        versionCode 10
         versionName "$libVersionName"
 
         // Define ProGuard rules for this android library project. These rules will be applied when
